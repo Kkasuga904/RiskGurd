@@ -1,91 +1,36 @@
 # Risk Guard (VS Code Extension)
 
-Engineers, reviewers, and infra teams who want to spot risky diffs **before they land**.
+**Spot risky git diffs before they land.**  
+Risk Guard scans your **staged/unstaged diffs** inside VS Code and surfaces hazards in the **Problems** panel, so you can fix issues **before commit / PR**.
 
-Risk Guard scans your **git diff** inside VS Code and surfaces risky changes directly in the **Problems panel**, so you can fix issues early—before commit or PR.
+## What it does
+- Diff-first detection (analyzes what changed)
+- Deterministic, rule-based checks (offline by default)
+- Reports findings as VS Code diagnostics with file/line navigation
 
----
+## Why
+Small infra/config diffs can cause production incidents. CI and PR reviews are often too late and too noisy. Risk Guard gives fast local feedback at the moment you change code.
 
-## What is Risk Guard?
+## How it works
+`git diff` → rule-based analysis → VS Code **Problems**
 
-Risk Guard is a VS Code extension that inspects Git diffs (staged or unstaged) and flags **potentially dangerous edits** as editor diagnostics.
+- Unstaged: `git diff`
+- Staged (optional): `git diff --cached`
+- No network calls, no telemetry
 
-It is designed for application and infrastructure code where small changes can cause production incidents.
-
----
-
-## Why Risk Guard exists（解決したい問題）
-
-- **Prevent incidents early**  
-  Catch risky infrastructure or configuration changes before they reach production.
-
-- **Reduce reviewer load**  
-  Filter out obvious hazards locally so reviewers can focus on higher-level logic.
-
-- **Fast feedback for authors**  
-  Get immediate signals on save or before committing, without waiting for CI or review.
-
----
-
-## How it works  
-**git diff → rule-based analysis → Problems**
-
-1. Reads the current Git diff in your workspace  
-   - unstaged (`git diff`)  
-   - staged (`git diff --cached`, optional)
-
-2. Applies **deterministic, rule-based checks**  
-   - no AI decisions  
-   - no external services  
-   - fully offline
-
-3. Reports findings as diagnostics in the **Problems panel**, with file/line navigation.
-
----
-
-## Features
-
-- **Diff-native detection**  
-  Analysis is based on *what changed*, not the full file.
-
-- **Infrastructure-focused rules**  
-  Examples:
-  - Public ingress (SSH / RDP / open ports)
-  - Privileged Kubernetes pods
-  - Missing resource limits in K8s
-  - IAM wildcard permissions
-  - S3 / RDS hardening regressions
-  - Disabled logging or audit settings
-  - Plaintext secrets in diffs
-
-- **Multiple trigger modes**
-  - On save
-  - On demand (Command Palette)
-  - Background timer
-
-- **Lightweight & offline**
-  - No telemetry
-  - No network calls
-  - Safe for restricted environments
-
-- **Future-ready**
-  - Optional AI-assisted *explanations* are planned
-  - Detection logic will remain deterministic by default
-
----
+## Example rules (early MVP)
+- Public ingress / open ports (SSH/RDP, 0.0.0.0/0)
+- Kubernetes privileged pods / missing resource limits
+- IAM wildcard permissions
+- Logging/audit disabled
+- Plaintext secrets in diffs
 
 ## Usage
-
-### For users
-1. Install **Risk Guard** from the VS Code Marketplace.
-2. Open a Git repository and modify files.
-3. Save a file or run `Risk Guard: Scan Git Diff`.
-4. Open the **Problems panel** to review issues and jump to the exact lines.
-
 ### For development
 ```bash
 npm install
 npm run compile
+<<<<<<< HEAD
 Press F5 to launch the Extension Development Host.
 
 Settings
@@ -109,3 +54,5 @@ Optimize for real-world infra mistakes, not academic linting
 
 
 
+=======
+>>>>>>> 6619062 (Add initial README describing Risk Guard)
